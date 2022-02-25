@@ -6,12 +6,15 @@ class PostimagesController < ApplicationController
   def create
     @post_image = Postimage.new(post_image_params)
     @post_image.user_id = current_user.id
-    @post_image.save
-    redirect_to postimages_path
+    if @post_image.save
+      redirect_to postimages_path
+    else
+      render :new
+    end
   end
 
   def index
-    @post_images = Postimage.all
+    @post_images = Postimage.page(params[:page])
   end
 
   def show
